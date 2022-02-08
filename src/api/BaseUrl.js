@@ -3,5 +3,6 @@ export default {
   // baseURL: `https://api.wishplease.id`
 
   //STAGING
-  baseURL: `http://localhost:8080`
+  // baseURL: `https://staging-trimitra.herokuapp.com/`
+  baseURL: `https://trimitra-server.herokuapp.com`
 };

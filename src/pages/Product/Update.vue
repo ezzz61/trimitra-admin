@@ -25,6 +25,19 @@
                     placeholder="input title"
                   ></b-form-input>
                 </b-form-group>
+                <b-form-group
+                  id="input-group-1"
+                  label="Cluster Name :"
+                  label-for="input-1"
+                >
+                  <b-form-input
+                    id="Article"
+                    v-model="form.cluster"
+                    type="text"
+                    required
+                    placeholder="cluster name"
+                  ></b-form-input>
+                </b-form-group>
 
                 <b-row>
                   <b-col>
@@ -243,6 +256,7 @@ export default {
       urls: [],
       files: [],
       form: {
+        cluster: "",
         title: "",
         description: "",
         bed_room: "",
@@ -277,7 +291,13 @@ export default {
 
       try {
         const formData = new FormData();
+        if (this.files.length) {
+          for (var i = 0; i < this.files.length; i++) {
+            formData.append("images", this.files[i]);
+          }
+        }
         formData.append("title", this.form.title);
+        formData.append("cluster", this.form.cluster);
         formData.append("description", this.form.description);
         formData.append("bed_room", this.form.bed_room);
         formData.append("bath_room", this.form.bath_room);
@@ -286,14 +306,7 @@ export default {
         formData.append("maps", this.form.maps);
         formData.append("is_active", this.form.is_active);
 
-        if (this.files) {
-          for (var i = 0; i < this.files.length; i++) {
-            formData.append("images", this.files[i]);
-          }
-        }
-
         let res = await productApi.Update(this.$route.params.id, formData);
-        console.log(res);
         if (res.data.status === 200) {
           this.success = true;
           this.$notify({
@@ -318,6 +331,8 @@ export default {
         const response = await productApi.Detail(this.$route.params.id);
         if (response.data.status === 200) {
           this.form = response.data.data;
+
+          console.log(response.data.data);
           if (response.data.data.images.length) {
             let embedImagePath = [];
             response.data.data.images.map((image) => {

@@ -23,8 +23,13 @@
         <p>Product</p>
       </sidebar-link>
 
+      <sidebar-link to="/admin/features">
+        <i class="nc-icon nc-bullet-list-67"></i>
+        <p>Features</p>
+      </sidebar-link>
+
       <sidebar-link to="/admin/marketing">
-        <i class="nc-icon nc-single-02"></i>
+        <i class="nc-icon nc-badge"></i>
         <p>Marketing</p>
       </sidebar-link>
 

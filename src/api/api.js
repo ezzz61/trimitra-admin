@@ -8,7 +8,9 @@ export default () => {
         ? localStorage.getItem("token")
         : null
     },
-    baseURL: `http://localhost:8080/api`
+    // baseURL: `http://localhost:8080/api`
+    // baseURL: `https://staging-trimitra.herokuapp.com/api`
+    baseURL: `https://trimitra-server.herokuapp.com/api`
   });
   instance.interceptors.response.use(
     function(response) {

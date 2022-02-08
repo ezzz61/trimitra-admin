@@ -25,6 +25,19 @@
                     placeholder="input title"
                   ></b-form-input>
                 </b-form-group>
+                <b-form-group
+                  id="input-group-1"
+                  label="Cluster Name :"
+                  label-for="input-1"
+                >
+                  <b-form-input
+                    id="Article"
+                    v-model="form.cluster"
+                    type="text"
+                    required
+                    placeholder="Balencia"
+                  ></b-form-input>
+                </b-form-group>
 
                 <b-row>
                   <b-col>
@@ -229,6 +242,7 @@ export default {
       files: [],
       form: {
         title: "",
+        cluster: "",
         description: "",
         bed_room: "",
         bath_room: "",
@@ -263,6 +277,7 @@ export default {
       try {
         const formData = new FormData();
         formData.append("title", this.form.title);
+        formData.append("cluster", this.form.cluster);
         formData.append("description", this.form.description);
         formData.append("bed_room", this.form.bed_room);
         formData.append("bath_room", this.form.bath_room);

@@ -1,6 +1,5 @@
 <template>
   <b-container fluid>
-    <!-- User Interface controls -->
     <notifications> </notifications>
 
     <b-row class="mt-5">
@@ -41,9 +40,9 @@
           <div class="col-6">
             <button
               class="btn btn-icon btn-primary btn-fill"
-              @click="$router.push({ name: 'add_appointment' })"
+              @click="$router.push({ name: 'Features_add' })"
             >
-              Add Appointment
+              Add Features
             </button>
           </div>
         </div>
@@ -111,7 +110,7 @@
                 class="btn btn-icon btn-info mx-1"
                 @click="
                   $router.push({
-                    name: 'update_appointment',
+                    name: 'Features_update',
                     params: { id: row.item._id },
                   })
                 "
@@ -169,7 +168,7 @@
       @hide="resetInfoModal"
     >
       <pre>
-are you sure want to delete <strong>{{ infoModal.title }} </strong>from User list ?</pre>
+are you sure want to delete <strong>{{ infoModal.title }} </strong>from Features list ?</pre>
     </b-modal>
   </b-container>
 </template>
@@ -177,7 +176,8 @@ are you sure want to delete <strong>{{ infoModal.title }} </strong>from User lis
 <script>
 import Card from "src/components/Cards/Card.vue";
 import LoadingTable from "src/components/LoadingTable.vue";
-import appointmentApi from "@/api/appointmentApi";
+import featureApi from "../../api/featureApi";
+import baseUrl from "../../api/BaseUrl";
 
 export default {
   components: {
@@ -188,20 +188,7 @@ export default {
     return {
       success: false,
       items: [],
-      month_name: [
-        "januari",
-        "februari",
-        "maret",
-        "april",
-        "mei",
-        "juni",
-        "juli",
-        "agustus",
-        "september",
-        "oktober",
-        "november",
-        "desember",
-      ],
+      baseUrl: baseUrl.baseURL,
       isLoading: false,
       failed: false,
       type: ["success", "danger"],
@@ -211,33 +198,14 @@ export default {
 
       fields: [
         {
-          key: "name",
-          label: "Customer Name",
-          sortable: true,
-          sortDirection: "desc",
-        },
-        {
-          key: "email",
-          label: "email",
-          sortable: true,
-          sortDirection: "desc",
-        },
-
-        {
-          key: "no_whatsapp",
-          label: "NO WA",
+          key: "title",
+          label: "Feature Title",
           sortable: true,
           sortDirection: "desc",
         },
         {
           key: "createdAt",
-          label: "Did Appointment at",
-          sortable: true,
-          sortDirection: "desc",
-        },
-        {
-          key: "status",
-          label: "status",
+          label: "Bergabung Pada",
           sortable: true,
           sortDirection: "desc",
         },
@@ -292,7 +260,7 @@ export default {
       this.failed = false;
 
       try {
-        let res = await appointmentApi.Delete(id);
+        let res = await featureApi.Delete(id);
         if (res.data.status === 200) {
           this.success = true;
           this.notifyVue();
@@ -328,22 +296,9 @@ export default {
     async loadStart() {
       try {
         this.isLoading = true;
-        let res = await appointmentApi.Get();
-        const appointment = res.data.data.data;
-        let filterAppointment = [];
-        // filter created
-        appointment.map((data) => {
-          filterAppointment.push({
-            ...data,
-            createdAt:
-              new Date(data.createdAt).getDate().toString() +
-              " " +
-              this.month_name[new Date(data.createdAt).getMonth()] +
-              " " +
-              new Date(data.createdAt).getFullYear().toString().substr(-2),
-          });
-        });
-        this.items = filterAppointment;
+        let res = await featureApi.Get();
+        const feature = res.data.data.data;
+        this.items = feature;
         this.totalRows = this.items.length;
         this.isLoading = false;
       } catch (error) {

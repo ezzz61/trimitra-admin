@@ -95,6 +95,21 @@ const routes = [
         component: () => import("src/pages/User/Add.vue")
       },
       {
+        path: "features",
+        name: "Features",
+        component: () => import("src/pages/Features/Features.vue")
+      },
+      {
+        path: "features/u/:id",
+        name: "Features_update",
+        component: () => import("src/pages/Features/Update.vue")
+      },
+      {
+        path: "features/add",
+        name: "Features_add",
+        component: () => import("src/pages/Features/Add.vue")
+      },
+      {
         path: "marketing",
         name: "marketing",
         component: () => import("src/pages/Marketing/Marketing.vue")
