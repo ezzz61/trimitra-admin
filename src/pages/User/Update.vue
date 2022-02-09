@@ -150,7 +150,7 @@ export default {
       let data = this.form;
       try {
         let res = await User.Update(this.$route.params.id, data);
-        if (res.data.success) {
+        if (res.data.status === 200) {
           this.success = true;
           this.$notify({
             message: "success",

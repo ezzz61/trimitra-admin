@@ -17,7 +17,7 @@ export default {
     return Api().get("/candidate/" + data);
   },
   Update(id, data) {
-    return Api().put("/user/update" + id, data);
+    return Api().put("/user/update/" + id, data);
   },
   Role(data) {
     return Api().get("/user/role/");

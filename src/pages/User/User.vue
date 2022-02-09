@@ -116,13 +116,13 @@
                   })
                 "
               >
-                <i class="fa fa-edit"></i>
+                Edit
               </button>
               <button
                 class="btn btn-icon btn-danger mx-1"
                 @click="info(row.item, row.index, $event.target)"
               >
-                <i class="fa fa-trash"></i>
+                Delete
               </button>
             </template>
           </b-table>
