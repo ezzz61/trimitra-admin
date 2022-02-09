@@ -6,7 +6,7 @@
         <b-col cols="6" md="6" class="my-1">
           <card>
             <div>
-              <h1 class="text-center">Add User</h1>
+              <h1 class="text-center">Update User</h1>
               <b-alert :show="showError" variant="danger">{{
                 messageError
               }}</b-alert>
@@ -107,6 +107,7 @@
 <script>
 import VueUploadMultipleImage from "vue-upload-multiple-image";
 import User from "@/api/UserApi";
+import CryptoJS from "crypto-js";
 
 export default {
   components: {
@@ -133,12 +134,7 @@ export default {
       allImage: [],
 
       angka: 2,
-      form: {
-        name: "",
-        content: null,
-        start_date: null,
-        end_time: null,
-      },
+      form: {},
       isLoading: false,
       options: [],
       show: true,
@@ -187,8 +183,18 @@ export default {
   },
   async created() {
     try {
+      const cryptoSEC = "udontknowitforsure";
       let getdetail = await User.Detail(this.$route.params.id);
-      this.form = getdetail.data.data;
+      const data = {
+        ...getdetail.data.data,
+        password: CryptoJS.AES.decrypt(
+          getdetail.data.data.password,
+          cryptoSEC
+        ).toString(CryptoJS.enc.Utf8),
+      };
+      this.form = data;
+
+      console.log(this.form);
     } catch (error) {
       console.log(error);
       this.$notify({
