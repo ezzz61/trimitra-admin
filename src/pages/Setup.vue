@@ -133,7 +133,29 @@
           <b-btn @click="saveBanners" class="btn-primary mt-4">SAVE</b-btn>
         </div>
       </b-tab>
-      <b-tab title="Disabled"><p>I'm a disabled tab!</p></b-tab>
+      <b-tab title="Video Url">
+        <div>
+          <b-form-group
+            id="input-group-1"
+            label="Video Url"
+            label-for="input-1"
+          >
+            <b-form-input
+              id="Event"
+              v-model="urls.url"
+              type="text"
+              required
+              placeholder="https://youtube..."
+            ></b-form-input>
+          </b-form-group>
+
+          <b-form-checkbox v-model="urls.isActive" switch size="md">{{
+            urls.isActive ? "Active" : "Unactive"
+          }}</b-form-checkbox>
+
+          <b-btn @click="saveUrl" class="btn-primary mt-4">SAVE</b-btn>
+        </div>
+      </b-tab>
     </b-tabs>
   </section>
 </template>
@@ -155,11 +177,16 @@ export default {
       previewHomeImage: null,
       homeTitle: "",
       homeOverview: "",
+      urls: {
+        url: "",
+        isActive: true,
+      },
     };
   },
   async mounted() {
     await this.getBanners();
     await this.getHome();
+    await this.getUrl();
   },
   methods: {
     onFileChangeBanner(e) {
@@ -323,6 +350,67 @@ export default {
           this.homeTitle = title;
           this.homeOverview = body;
           this.previewHomeImage = imagesUrl;
+        } else {
+          this.$notify({
+            message: "Something went wrong while fetch Banners!",
+            icon: "fa fa-check-circle",
+            horizontalAlign: "right",
+            verticalAlign: "top",
+            type: "failed",
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async saveUrl() {
+      try {
+        const isUrls = await homeApi.GetUrl();
+
+        if (isUrls.data.data.status === 200 && isUrls.data.data.data !== null) {
+          const response = await homeApi.UpdateUrl(
+            isUrls.data.data.data._id,
+            this.urls
+          );
+
+          if (response.data.status === 200) {
+            this.$notify({
+              message: "Url Updated!",
+              icon: "fa fa-check-circle",
+              horizontalAlign: "right",
+              verticalAlign: "top",
+              type: "success",
+            });
+          }
+        } else {
+          const response = await homeApi.AddUrl(this.urls);
+          if (response.data.status === 200) {
+            this.$notify({
+              message: "New Url Saved!",
+              icon: "fa fa-check-circle",
+              horizontalAlign: "right",
+              verticalAlign: "top",
+              type: "success",
+            });
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async getUrl() {
+      try {
+        const response = await homeApi.GetUrl();
+
+        if (
+          response.data.data.status === 200 &&
+          response.data.data.data !== null
+        ) {
+          this.urls = {
+            url: response.data.data.data.url,
+            isActive: response.data.data.data.isActive,
+          };
         } else {
           this.$notify({
             message: "Something went wrong while fetch Banners!",

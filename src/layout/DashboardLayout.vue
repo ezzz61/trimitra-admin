@@ -67,7 +67,8 @@ export default {
     };
   },
   created() {
-    let data = JSON.parse(localStorage.getItem("data_user"));
+    let data = this.$cookie.get("data_user");
+    this.data = JSON.parse(data);
     // this.data = data;
     // if (localStorage.getItem("data_user") && localStorage.getItem("token")) {
     //   if (token !== null && data.role == "admin") {
@@ -90,7 +91,8 @@ export default {
 
     //   this.$router.push({ path: "/login" });
     // }
-    this.name = data.email;
+    this.name = this.data.email;
+    this.role = this.data.role;
   },
 
   components: {

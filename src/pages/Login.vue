@@ -102,8 +102,6 @@ export default {
             this.$cookie.set("data_user", JSON.stringify(data_user), {
               expires: expired,
             });
-            localStorage.setItem("token", res.data.data.token);
-            localStorage.setItem("data_user", JSON.stringify(data_user));
             this.$notify({
               message: "success login",
               icon: "fa fa-check-circle",
@@ -127,8 +125,8 @@ export default {
     },
   },
   created() {
-    let token = localStorage.getItem("token");
-    let data = localStorage.getItem("data_user");
+    let token = this.$cookie.get("token");
+    let data = this.$cookie.get("data_user");
 
     if (token !== null && data !== null) {
       this.$router.push({ path: "/" });

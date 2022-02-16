@@ -2,6 +2,7 @@ import DashboardLayout from "../layout/DashboardLayout.vue";
 // GeneralViews
 import NotFound from "../pages/NotFoundPage.vue";
 import Login from "src/pages/Login.vue";
+import Vue from "vue";
 
 // Admin pages
 import Overview from "src/pages/Overview.vue";
@@ -16,12 +17,24 @@ const routes = [
   },
   {
     path: "/login",
+    name: "login",
     component: Login
   },
   {
     path: "/admin",
     component: DashboardLayout,
     redirect: "/admin/overview",
+    beforeEnter(to, from, next) {
+      // logic here
+      // const { $cookie } = router.app.config.globalProperties;
+      const data = Vue.cookie.get("data_user");
+      const user = JSON.parse(data);
+      if (user && user.role === "admin") {
+        next();
+      } else {
+        next({ name: "login" });
+      }
+    },
     children: [
       {
         path: "overview",

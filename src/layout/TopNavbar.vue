@@ -26,26 +26,25 @@
 <script>
 export default {
   props: {
-    name: String
+    name: String,
   },
   computed: {
     routeName() {
       const { name } = this.$route;
       return this.capitalizeFirstLetter(name);
-    }
+    },
   },
   data() {
     return {
-      activeNotifications: false
+      activeNotifications: false,
     };
   },
   methods: {
     handlelogout() {
       this.$cookie.delete("token");
       this.$cookie.delete("data_user");
-      localStorage.removeItem("token");
-      localStorage.removeItem("data_user");
-
+      // localStorage.removeItem("token");
+      // localStorage.removeItem("data_user");
       this.$router.push({ path: "/login" });
     },
     capitalizeFirstLetter(string) {
@@ -62,8 +61,8 @@ export default {
     },
     hideSidebar() {
       this.$sidebar.displaySidebar(false);
-    }
-  }
+    },
+  },
 };
 </script>
 <style></style>
