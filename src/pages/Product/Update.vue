@@ -7,7 +7,7 @@
         <b-col cols="8" md="8" class="my-1">
           <card>
             <div>
-              <h4 class="text-center font-weight-bold">Add Product</h4>
+              <h4 class="text-center font-weight-bold">Update Product</h4>
               <b-alert :show="showError" variant="danger">{{
                 messageError
               }}</b-alert>

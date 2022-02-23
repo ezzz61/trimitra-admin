@@ -5,7 +5,7 @@
         <b-col cols="6" md="6" class="my-1">
           <card>
             <div>
-              <h4 class="text-center">Add Appointment</h4>
+              <h4 class="text-center">Update Appointment</h4>
               <b-alert :show="showError" variant="danger">{{
                 messageError
               }}</b-alert>
@@ -51,7 +51,6 @@
                     placeholder="enter email"
                   ></b-form-input>
                 </b-form-group>
-
                 <b-form-group
                   id="input-group-1"
                   label="Marketing Name:"
@@ -60,7 +59,6 @@
                   <b-form-select
                     v-model="selected"
                     :options="options"
-                    :value="marketingName"
                     class="mb-3"
                     value-field="item"
                     text-field="name"
@@ -80,7 +78,8 @@
                     value-field="item"
                     text-field="name"
                     disabled-field="notEnabled"
-                  ></b-form-select>
+                  >
+                  </b-form-select>
                 </b-form-group>
 
                 <b-col>
@@ -147,7 +146,7 @@ export default {
     return {
       options_floor: [{ value: null, text: "Please select an floor" }],
       options_category: [{ value: null, text: "Please select an floor" }],
-      selected: null,
+      selected: "",
       arr_criteria: [
         {
           name: "input criteria name ex: Gaji",
@@ -162,14 +161,14 @@ export default {
         { name: "failed", item: "failed" },
       ],
       marketingName: "",
-      selected_status: null,
+      selected_status: {},
       images: [],
       allImage: [],
       url: null,
       file: null,
       angka: 2,
       form: {},
-      selected: null,
+      selected: {},
       isLoading: false,
       options: [],
       show: true,
@@ -179,7 +178,6 @@ export default {
   },
   async mounted() {
     this.getMarketing();
-    this.loadData();
   },
   methods: {
     async loadData() {
@@ -195,12 +193,13 @@ export default {
             (status) => status.item === response.data.data.status
           );
 
-          this.selected = marketing_name[0];
-          console.log(this.selected);
+          if (marketing_name) {
+            this.selected = marketing_name[0].item;
+          }
 
-          this.marketingName = this.selected.name;
-          console.log(this.marketingName);
-          this.selected_status = appointment_status[0];
+          if (appointment_status) {
+            this.selected_status = appointment_status[0].name;
+          }
         }
       } catch (error) {
         console.log(error);
@@ -216,7 +215,8 @@ export default {
           });
 
           this.options = data;
-          console.log(this.options);
+
+          this.loadData();
         }
       } catch (error) {
         console.log(error);
@@ -224,10 +224,10 @@ export default {
     },
     async onSubmit() {
       this.isLoading = true;
-      let data = this.form;
       try {
-        let res = await appointmentApi.Add({
-          ...data,
+        let res = await appointmentApi.Update(this.$route.params.id, {
+          ...this.form,
+          status: this.selected_status,
           marketing_name: this.selected,
         });
         if (res.data.status === 200) {
@@ -240,7 +240,7 @@ export default {
             type: "success",
           });
           this.$router.push({
-            path: "/admin/user",
+            path: "/admin/appointment",
           });
           this.isLoading = false;
         } else {
