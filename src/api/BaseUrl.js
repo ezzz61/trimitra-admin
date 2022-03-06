@@ -5,4 +5,5 @@ export default {
   //STAGING
   // baseURL: `https://staging-trimitra.herokuapp.com/`
   baseURL: `https://trimitra-server.herokuapp.com`
+  // baseURL: `http://localhost:8080`
 };

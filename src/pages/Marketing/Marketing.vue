@@ -177,6 +177,7 @@ are you sure want to delete <strong>{{ infoModal.title }} </strong>from Marketin
 import Card from "src/components/Cards/Card.vue";
 import LoadingTable from "src/components/LoadingTable.vue";
 import marketingApi from "@/api/marketingApi";
+import moment from "moment";
 
 export default {
   components: {
@@ -187,20 +188,7 @@ export default {
     return {
       success: false,
       items: [],
-      month_name: [
-        "januari",
-        "februari",
-        "maret",
-        "april",
-        "mei",
-        "juni",
-        "juli",
-        "agustus",
-        "september",
-        "oktober",
-        "november",
-        "desember",
-      ],
+      moment: moment,
       isLoading: false,
       failed: false,
       type: ["success", "danger"],
@@ -333,12 +321,7 @@ export default {
         marketing.map((data) => {
           filtreMarketing.push({
             ...data,
-            createdAt:
-              new Date(data.createdAt).getDate().toString() +
-              " " +
-              this.month_name[new Date(data.createdAt).getMonth()] +
-              " " +
-              new Date(data.createdAt).getFullYear().toString().substr(-2),
+            createdAt: this.moment(data.createdAt).format("L"),
           });
         });
         this.items = filtreMarketing;

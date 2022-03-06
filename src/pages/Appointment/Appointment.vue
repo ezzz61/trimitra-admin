@@ -107,6 +107,66 @@
               {{ row.item.floor_id[0].name }}
             </template> -->
             <template #cell(actions)="row">
+              <!-- modal stuff -->
+
+              <!-- Using value -->
+              <b-button class="mx-1" v-b-modal="row.item._id">Details</b-button>
+
+              <!-- The modal -->
+              <b-modal :id="row.item._id">
+                <table>
+                  <tr>
+                    <td>Customer Name</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.email }}</td>
+                  </tr>
+                  <tr>
+                    <td>No WA</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.no_whatsapp }}</td>
+                  </tr>
+                  <tr>
+                    <td>Appointment at</td>
+                    <td class="px-4">:</td>
+                    <td>
+                      {{ moment(row.item.appointment_date).format("LL") }}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Marketing Name</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.marketing_name.name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Appointment For</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.product.title }}</td>
+                  </tr>
+                  <tr>
+                    <td>Status</td>
+                    <td class="px-4">:</td>
+                    <td>{{ row.item.status }}</td>
+                  </tr>
+                </table>
+                <template #modal-footer>
+                  <div class="w-100">
+                    <b-button
+                      variant="primary"
+                      size="sm"
+                      class="float-right"
+                      @click="$bvModal.hide(row.item._id)"
+                    >
+                      Done
+                    </b-button>
+                  </div>
+                </template>
+              </b-modal>
+              <!-- end modal stuff -->
               <button
                 class="btn btn-icon btn-info mx-1"
                 @click="
@@ -165,11 +225,10 @@
     <b-modal
       @ok="handleOk(infoModal.content)"
       :id="infoModal.id"
-      :title="'Delete ' + infoModal.name"
+      title="Delete Appointment"
       @hide="resetInfoModal"
     >
-      <pre>
-are you sure want to delete <strong>{{ infoModal.title }} </strong>from User list ?</pre>
+      <pre>are you sure want to delete ?</pre>
     </b-modal>
   </b-container>
 </template>
@@ -178,6 +237,7 @@ are you sure want to delete <strong>{{ infoModal.title }} </strong>from User lis
 import Card from "src/components/Cards/Card.vue";
 import LoadingTable from "src/components/LoadingTable.vue";
 import appointmentApi from "@/api/appointmentApi";
+import moment from "moment";
 
 export default {
   components: {
@@ -186,8 +246,9 @@ export default {
   },
   data() {
     return {
+      moment: moment,
       success: false,
-      items: [],
+      items: [{ title: "" }],
       month_name: [
         "januari",
         "februari",
@@ -335,14 +396,11 @@ export default {
         appointment.map((data) => {
           filterAppointment.push({
             ...data,
-            createdAt:
-              new Date(data.createdAt).getDate().toString() +
-              " " +
-              this.month_name[new Date(data.createdAt).getMonth()] +
-              " " +
-              new Date(data.createdAt).getFullYear().toString().substr(-2),
+            createdAt: this.moment(data.createdAt).format("LL"),
           });
         });
+
+        // console.log(filterAppointment);
         this.items = filterAppointment;
         this.totalRows = this.items.length;
         this.isLoading = false;

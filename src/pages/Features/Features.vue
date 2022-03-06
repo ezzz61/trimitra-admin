@@ -164,11 +164,10 @@
     <b-modal
       @ok="handleOk(infoModal.content)"
       :id="infoModal.id"
-      :title="'Delete ' + infoModal.name"
+      :title="'Delete '"
       @hide="resetInfoModal"
     >
-      <pre>
-are you sure want to delete <strong>{{ infoModal.title }} </strong>from Features list ?</pre>
+      <pre>are you sure want to delete  ?</pre>
     </b-modal>
   </b-container>
 </template>
@@ -178,6 +177,7 @@ import Card from "src/components/Cards/Card.vue";
 import LoadingTable from "src/components/LoadingTable.vue";
 import featureApi from "../../api/featureApi";
 import baseUrl from "../../api/BaseUrl";
+import moment from "moment";
 
 export default {
   components: {
@@ -187,6 +187,7 @@ export default {
   data() {
     return {
       success: false,
+      moment: moment,
       items: [],
       baseUrl: baseUrl.baseURL,
       isLoading: false,
@@ -205,7 +206,7 @@ export default {
         },
         {
           key: "createdAt",
-          label: "Bergabung Pada",
+          label: "Dibuat Pada",
           sortable: true,
           sortDirection: "desc",
         },
@@ -298,7 +299,11 @@ export default {
         this.isLoading = true;
         let res = await featureApi.Get();
         const feature = res.data.data.data;
-        this.items = feature;
+        let data = [];
+        feature.map((f) => {
+          data.push({ ...f, createdAt: this.moment(f.createdAt).format("L") });
+        });
+        this.items = data;
         this.totalRows = this.items.length;
         this.isLoading = false;
       } catch (error) {

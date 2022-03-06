@@ -41,7 +41,7 @@
                 <b-form-file
                   multiple
                   @change="onFileChangeHomeImage"
-                  accept="image/*"
+                  accept="image/png, image/jpg, image/jpeg"
                   v-model="homeImage"
                   placeholder="choose image"
                   drop-placeholder="image only"
@@ -105,7 +105,7 @@
             <b-form-file
               multiple
               @change="onFileChangeBanner"
-              accept="image/*"
+              accept="image/png, image/jpg, image/jpeg"
               v-model="bannerImages"
               placeholder="choose image"
               drop-placeholder="image only"

@@ -177,6 +177,7 @@ are you sure want to delete <strong>{{ infoModal.title }} </strong>from User lis
 <script>
 import Card from "src/components/Cards/Card.vue";
 import LoadingTable from "src/components/LoadingTable.vue";
+import moment from "moment";
 
 import User from "@/api/UserApi";
 
@@ -189,20 +190,7 @@ export default {
     return {
       success: false,
       items: [],
-      month_name: [
-        "januari",
-        "februari",
-        "maret",
-        "april",
-        "mei",
-        "juni",
-        "juli",
-        "agustus",
-        "september",
-        "oktober",
-        "november",
-        "desember",
-      ],
+      moment: moment,
       isLoading: false,
       failed: false,
       type: ["success", "danger"],
@@ -330,15 +318,10 @@ export default {
         users.map((user) => {
           filtredUser.push({
             ...user,
-            createdAt:
-              new Date(user.createdAt).getDate().toString() +
-              " " +
-              this.month_name[new Date(user.createdAt).getMonth()] +
-              " " +
-              new Date(user.createdAt).getFullYear().toString().substr(-2),
+            createdAt: this.moment(user.createdAt).format("L"),
           });
         });
-        console.log(filtredUser);
+        // console.log(filtredUser);
         this.items = filtredUser;
         this.totalRows = this.items.length;
         this.isLoading = false;

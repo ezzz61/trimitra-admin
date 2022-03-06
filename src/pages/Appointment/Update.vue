@@ -32,7 +32,9 @@
                   <b-form-input
                     id="Event"
                     v-model="form.no_whatsapp"
-                    type="number"
+                    type="text"
+                    @keypress="onlyNumber"
+                    maxlength="12"
                     required
                     placeholder="enter whatsapp number"
                   ></b-form-input>
@@ -51,9 +53,10 @@
                     placeholder="enter email"
                   ></b-form-input>
                 </b-form-group>
+
                 <b-form-group
                   id="input-group-1"
-                  label="Marketing Name:"
+                  label="Marketing :"
                   label-for="input-1"
                 >
                   <b-form-select
@@ -62,6 +65,7 @@
                     class="mb-3"
                     value-field="item"
                     text-field="name"
+                    disabled-field="notEnabled"
                   >
                   </b-form-select>
                 </b-form-group>
@@ -82,19 +86,36 @@
                   </b-form-select>
                 </b-form-group>
 
+                <b-form-group
+                  id="input-group-1"
+                  label="Selected Product :"
+                  label-for="input-1"
+                >
+                  <b-form-input
+                    disabled
+                    id="Event"
+                    v-model="form.product.title"
+                    type="text"
+                    required
+                    placeholder="customer name"
+                  ></b-form-input>
+                </b-form-group>
+
                 <b-col>
                   <b-form-group
                     id="input-group-1"
                     label="Appointment Date :"
                     label-for="input-1"
                   >
-                    <date-picker
+                    <datepicker
                       v-model="form.appointment_date"
-                      placeholder="18-06-1999"
-                      format="DD-MM-YYYY"
-                      valueType="format"
-                      style="height: 40px"
-                    ></date-picker>
+                      name="uniquename"
+                      :format="DatePickerFormat"
+                      :open-date="new Date()"
+                      :disabledDates="disabledDates"
+                    >
+                      ></datepicker
+                    >
                   </b-form-group>
                 </b-col>
 
@@ -134,18 +155,18 @@
 import appointmentApi from "@/api/appointmentApi";
 import marketingApi from "@/api/marketingApi";
 import "vue2-datepicker/index.css";
-import VueUploadMultipleImage from "vue-upload-multiple-image";
-import DatePicker from "vue2-datepicker";
+import Datepicker from "vuejs-datepicker";
+import moment from "moment";
 
 export default {
   components: {
-    VueUploadMultipleImage,
-    DatePicker,
+    Datepicker,
   },
   data() {
     return {
       options_floor: [{ value: null, text: "Please select an floor" }],
       options_category: [{ value: null, text: "Please select an floor" }],
+
       selected: "",
       arr_criteria: [
         {
@@ -154,6 +175,10 @@ export default {
           type: null,
         },
       ],
+      disabledDates: {
+        to: new Date(Date.now() - 8640000),
+      },
+      DatePickerFormat: "dd/MM/yyyy",
       options_data: [],
       options_status: [
         { name: "success", item: "success" },
@@ -161,13 +186,16 @@ export default {
         { name: "failed", item: "failed" },
       ],
       marketingName: "",
+      moment: moment,
       selected_status: {},
       images: [],
       allImage: [],
       url: null,
       file: null,
       angka: 2,
-      form: {},
+      form: {
+        title: "",
+      },
       selected: {},
       isLoading: false,
       options: [],
@@ -180,11 +208,35 @@ export default {
     this.getMarketing();
   },
   methods: {
+    onlyNumber($event) {
+      const keysAllowed = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        ".",
+      ];
+      const keyPressed = $event.key;
+      if (!keysAllowed.includes(keyPressed)) {
+        $event.preventDefault();
+      }
+    },
     async loadData() {
       try {
         const response = await appointmentApi.Detail(this.$route.params.id);
         if (response.data.status === 200) {
-          this.form = response.data.data;
+          this.form = {
+            ...response.data.data,
+            appointment_date: this.moment(
+              response.data.data.appointment_date
+            ).format("L"),
+          };
           const marketing_name = this.options.filter(
             (marketing) => marketing.item === response.data.data.marketing_name
           );
@@ -200,6 +252,8 @@ export default {
           if (appointment_status) {
             this.selected_status = appointment_status[0].name;
           }
+
+          console.log(this.form);
         }
       } catch (error) {
         console.log(error);
