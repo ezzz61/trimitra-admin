@@ -13,6 +13,7 @@
                 <b-form-input
                   id="Event"
                   v-model="homeTitle"
+                  maxlength="100"
                   type="text"
                   required
                   placeholder="DESIGNER HOMES IN A BEAUTIFUL AND"
@@ -78,6 +79,7 @@
             <b-form-input
               id="Event"
               v-model="bannerTitle"
+              maxlength="150"
               type="text"
               required
               placeholder="Our Best product"
@@ -92,6 +94,7 @@
             <b-form-textarea
               id="Event"
               v-model="bannerOverview"
+              maxlength="255"
               type="string"
               required
               placeholder="we offers you the best place"
@@ -143,6 +146,7 @@
             <b-form-input
               id="Event"
               v-model="urls.url"
+              maxlength="100"
               type="text"
               required
               placeholder="https://youtube..."

@@ -21,6 +21,7 @@
                     id="Event"
                     v-model="form.title"
                     type="text"
+                    maxlength="100"
                     required
                     placeholder="enter title"
                   ></b-form-input>

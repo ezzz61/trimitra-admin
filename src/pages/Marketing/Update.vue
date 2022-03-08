@@ -18,7 +18,9 @@
                   <b-form-input
                     id="Event"
                     v-model="form.nik"
-                    type="number"
+                    type="text"
+                    maxlength="16"
+                    @keypress="onlyNumber"
                     required
                     placeholder="enter marketing nik"
                   ></b-form-input>
@@ -34,6 +36,7 @@
                       <b-form-input
                         id="Event"
                         v-model="form.name"
+                        maxlength="40"
                         type="text"
                         required
                         placeholder="enter full name"
@@ -66,6 +69,7 @@
                     id="Event"
                     v-model="form.email"
                     type="text"
+                    maxlength="40"
                     required
                     placeholder=" email ex: andimalaran@mail.com"
                   ></b-form-input>
@@ -79,7 +83,9 @@
                   <b-form-input
                     id="Event"
                     v-model="form.no_whatsapp"
-                    type="number"
+                    type="text"
+                    @keypress="onlyNumber"
+                    maxlength="12"
                     required
                     placeholder="enter whatsapp number"
                   ></b-form-input>
@@ -93,6 +99,7 @@
                   <b-form-textarea
                     id="Event"
                     v-model="form.alamat"
+                    maxlength="255"
                     type="text"
                     required
                     placeholder="enter marketing address"
@@ -203,6 +210,25 @@ export default {
     };
   },
   methods: {
+    onlyNumber($event) {
+      const keysAllowed = [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        ".",
+      ];
+      const keyPressed = $event.key;
+      if (!keysAllowed.includes(keyPressed)) {
+        $event.preventDefault();
+      }
+    },
     onFileChange(e) {
       const file = e.target.files[0];
       this.url = URL.createObjectURL(file);

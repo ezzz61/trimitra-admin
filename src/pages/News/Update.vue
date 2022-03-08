@@ -21,6 +21,7 @@
                     id="Article"
                     v-model="form.title"
                     type="text"
+                    maxlength="100"
                     required
                     placeholder="input title"
                   ></b-form-input>

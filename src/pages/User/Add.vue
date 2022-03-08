@@ -20,8 +20,9 @@
                   <b-form-input
                     id="Event"
                     v-model="form.email"
-                    type="text"
+                    type="email"
                     required
+                    maxlength="30"
                     placeholder=" email ex: andimalaran@mail.com"
                   ></b-form-input>
                 </b-form-group>
@@ -35,6 +36,7 @@
                     id="Event"
                     v-model="form.password"
                     type="password"
+                    maxlength="50"
                     required
                   ></b-form-input>
                 </b-form-group>
@@ -47,6 +49,7 @@
                     id="Event"
                     v-model="form.username"
                     type="text"
+                    maxlength="20"
                     required
                     placeholder="full name , ex: doni wihaya"
                   ></b-form-input>

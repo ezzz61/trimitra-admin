@@ -20,6 +20,7 @@
                   <b-form-input
                     id="Article"
                     v-model="form.title"
+                    maxlength="100"
                     type="text"
                     required
                     placeholder="input title"
@@ -33,6 +34,7 @@
                   <b-form-input
                     id="Article"
                     v-model="form.cluster"
+                    maxlength="50"
                     type="text"
                     required
                     placeholder="cluster name"
@@ -49,7 +51,9 @@
                       <b-form-input
                         id="Article"
                         v-model="form.bed_room"
-                        type="text"
+                        type="number"
+                        max="5"
+                        min="1"
                         required
                         placeholder="ex: 2"
                       ></b-form-input>
@@ -64,7 +68,9 @@
                       <b-form-input
                         id="Article"
                         v-model="form.bath_room"
-                        type="text"
+                        type="number"
+                        max="5"
+                        min="1"
                         required
                         placeholder="Ex: 2"
                       ></b-form-input>
@@ -79,7 +85,9 @@
                       <b-form-input
                         id="Article"
                         v-model="form.building_area"
-                        type="text"
+                        type="number"
+                        max="10000"
+                        min="1"
                         required
                         placeholder="Ex: 125"
                       ></b-form-input>
@@ -94,7 +102,9 @@
                       <b-form-input
                         id="Article"
                         v-model="form.carport"
-                        type="text"
+                        type="number"
+                        max="5"
+                        min="0"
                         required
                         placeholder="Ex: 1"
                       ></b-form-input>
@@ -110,6 +120,7 @@
                   <b-form-input
                     id="Article"
                     v-model="form.maps"
+                    maxlength="255"
                     type="text"
                     required
                     placeholder="google maps url"

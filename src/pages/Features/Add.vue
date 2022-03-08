@@ -20,6 +20,7 @@
                   <b-form-input
                     id="Event"
                     v-model="form.title"
+                    maxlength="100"
                     type="text"
                     required
                     placeholder="enter title"

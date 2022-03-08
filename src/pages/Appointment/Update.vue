@@ -19,6 +19,7 @@
                     id="Event"
                     v-model="form.name"
                     type="text"
+                    maxlength="40"
                     required
                     placeholder="customer name"
                   ></b-form-input>
@@ -48,6 +49,7 @@
                   <b-form-input
                     id="Event"
                     v-model="form.email"
+                    maxlength="30"
                     type="text"
                     required
                     placeholder="enter email"
