@@ -2,7 +2,7 @@ import Api from "@/api/api";
 
 export default {
   Get() {
-    return Api().get("news/");
+    return Api().get("news/admin");
   },
   Add(data) {
     return Api().post("news/add", data);
